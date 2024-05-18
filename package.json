@@ -1,0 +1,22 @@
+{
+  "name": "projectb-cloud-infrastructure",
+  "version": "1.0.0",
+  "description": "AWS cloud resources and deploy pipelines",
+  "main": "na",
+  "scripts": {
+    "test": "npm run tests"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tyler-simeone/ProjectB-cloud-infrastructure"
+  },
+  "author": "tyler simeone",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tyler-simeone/ProjectB-cloud-infrastructure/issues"
+  },
+  "homepage": "https://github.com/tyler-simeone/ProjectB-cloud-infrastructure#readme",
+  "dependencies": {
+    "terraform": "^1.23.0"
+  }
+}
