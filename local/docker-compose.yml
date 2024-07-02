@@ -1,0 +1,37 @@
+version: '3'
+
+services:
+    nginx:
+        build: ./nginx
+        container_name: nginx
+        networks:
+            - thenet
+        ports:
+            - '80:80'
+    manage-auth:
+        build: ../manage-auth
+        container_name: manage-auth-docker
+        networks:
+            - thenet
+    manage-users:
+        build: ../manage-users
+        container_name: manage-users-docker
+        networks:
+            - thenet
+    manage-boards:
+        build: ../manage-boards
+        container_name: manage-boards-docker
+        networks:
+            - thenet
+    manage-columns:
+        build: ../manage-columns
+        container_name: manage-columns-docker
+        networks:
+            - thenet
+    manage-tasks:
+        build: ../manage-tasks
+        container_name: manage-tasks-docker
+        networks:
+            - thenet
+networks:
+    thenet:
