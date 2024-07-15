@@ -1,3 +1,7 @@
+#################
+##    PROD     ##
+#################
+
 resource "aws_alb" "main" {
   name            = "${var.ecs_service_name}-load-balancer"
   subnets         = aws_subnet.public.*.id
@@ -38,7 +42,6 @@ resource "aws_alb_listener" "front_end" {
 #################
 ##   STAGING   ##
 #################
-
 
 resource "aws_alb" "staging" {
   name            = "${var.ecs_service_name}-load-balancer-staging"

@@ -1,37 +1,114 @@
-version: '3'
-
 services:
-    nginx:
-        build: ./nginx
-        container_name: nginx
-        networks:
-            - thenet
+    db:
+        image: mysql:latest
+        container_name: db-dev
+        environment:
+            - MYSQL_DATABASE=${MYSQL_DATABASE}
+            - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
         ports:
-            - '80:80'
+            - "3306:3306"
+        networks:
+            - my_custom_network
+        volumes:
+            - mysql_data:/var/lib/mysql
+            - ./db-init:/docker-entrypoint-initdb.d
+        healthcheck:
+            test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+            interval: 10s
+            timeout: 5s
+            retries: 3
+
     manage-auth:
-        build: ../manage-auth
+        build:
+            context: ../../ProjectB-manage-auth/manage-auth
+        image: tylersimeone/projectb/manage-auth
         container_name: manage-auth-docker
+        depends_on:
+            - manage-users
+        environment:
+            - ManageUsersLocalConnection=${MANAGE_USERS_LOCAL_CONNECTION}
+            - TokenEndpoint=${TOKEN_ENDPOINT}
+            - ClientId=${CLIENT_ID}
+            - ClientSecret=${CLIENT_SECRET}
+            - UserPoolId=${USER_POOL_ID}
+            - AccessKey=${ACCESS_KEY}
+            - SecretAccessKey=${SECRET_ACCESS_KEY}
+        ports:
+            - "5058:80"
         networks:
-            - thenet
+            - my_custom_network
+
     manage-users:
-        build: ../manage-users
+        build:
+            context: ../../ProjectB-manage-users/manage-users
+        image: tylersimeone/projectb/manage-users
         container_name: manage-users-docker
+        depends_on:
+            - db
+        environment:
+            - UserPoolId=${USER_POOL_ID}
+            - Region=${REGION}
+            - ProjectBLocalConnection=${PROJECT_B_LOCAL_CONX}
+        ports:
+            - "5222:80"
         networks:
-            - thenet
+            - my_custom_network
+
     manage-boards:
-        build: ../manage-boards
+        build:
+            context: ../../ProjectB-manage-boards/manage-boards
+        image: tylersimeone/projectb/manage-boards
         container_name: manage-boards-docker
+        depends_on:
+            - manage-columns
+            - db
+        environment:
+            - UserPoolId=${USER_POOL_ID}
+            - Region=${REGION}
+            - ProjectBLocalConnection=${PROJECT_B_LOCAL_CONX}
+            - ManageAuthLocalConnection=${MANAGE_AUTH_LOCAL_CONX}
+            - ManageColumnsLocalConnection=${MANAGE_COLUMNS_LOCAL_CONX}
+        ports:
+            - "5032:80"
         networks:
-            - thenet
+            - my_custom_network
+
     manage-columns:
-        build: ../manage-columns
+        build:
+            context: ../../ProjectB-manage-columns/manage-columns
+        image: tylersimeone/projectb/manage-columns
         container_name: manage-columns-docker
+        depends_on:
+            - db
+        environment:
+            - UserPoolId=${USER_POOL_ID}
+            - Region=${REGION}
+            - ProjectBLocalConnection=${PROJECT_B_LOCAL_CONX}
+            - ManageTasksLocalConnection=${MANAGE_TASKS_LOCAL_CONX}
+        ports:
+            - "5156:80"
         networks:
-            - thenet
+            - my_custom_network
+
     manage-tasks:
-        build: ../manage-tasks
+        build:
+            context: ../../ProjectB-manage-tasks/manage-tasks
+        image: tylersimeone/projectb/manage-tasks
         container_name: manage-tasks-docker
+        depends_on:
+            - db
+        environment:
+            - UserPoolId=${USER_POOL_ID}
+            - Region=${REGION}
+            - ProjectBLocalConnection=${PROJECT_B_LOCAL_CONX}
+        ports:
+            - "5273:80"
         networks:
-            - thenet
+            - my_custom_network
+
 networks:
-    thenet:
+    my_custom_network:
+        driver: bridge
+
+volumes:
+  mysql_data:
