@@ -1,5 +1,5 @@
 # ALB Security Group: Edit to restrict access to the application
-resource "aws_security_group" "lb" {
+resource "aws_security_group" "alb" {
   name        = "${var.ecs_service_name}-load-balancer-security-group"
   description = "controls access to the ALB"
   vpc_id      = aws_vpc.main.id
@@ -20,26 +20,6 @@ resource "aws_security_group" "lb" {
   }
 }
 
-resource "aws_security_group" "nginx_task" {
-  name        = "${var.ecs_service_name}-nginx-task-security-group"
-  description = "allow inbound access to the NGINX task from the ALB only"
-  vpc_id      = aws_vpc.main.id
-
-  ingress {
-    protocol        = "tcp"
-    from_port       = var.nginx_port
-    to_port         = var.nginx_port
-    security_groups = [aws_security_group.lb.id]
-  }
-
-  egress {
-    protocol    = "-1"
-    from_port   = 0
-    to_port     = 0
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-}
-
 resource "aws_security_group" "manage_auth_task" {
   name        = "${var.ecs_service_name}-manage-auth-task-security-group"
   description = "allow inbound access to the manage-auth task from the ALB only"
@@ -49,7 +29,7 @@ resource "aws_security_group" "manage_auth_task" {
     protocol        = "tcp"
     from_port       = var.manage_auth_port
     to_port         = var.manage_auth_port
-    security_groups = [aws_security_group.lb.id]
+    security_groups = [aws_security_group.alb.id]
   }
 
   egress {
@@ -69,7 +49,7 @@ resource "aws_security_group" "manage_users_task" {
     protocol        = "tcp"
     from_port       = var.manage_users_port
     to_port         = var.manage_users_port
-    security_groups = [aws_security_group.lb.id]
+    security_groups = [aws_security_group.alb.id]
   }
 
   egress {
@@ -89,7 +69,7 @@ resource "aws_security_group" "manage_boards_task" {
     protocol        = "tcp"
     from_port       = var.manage_boards_port
     to_port         = var.manage_boards_port
-    security_groups = [aws_security_group.lb.id]
+    security_groups = [aws_security_group.alb.id]
   }
 
   egress {
@@ -109,7 +89,7 @@ resource "aws_security_group" "manage_columns_task" {
     protocol        = "tcp"
     from_port       = var.manage_columns_port
     to_port         = var.manage_columns_port
-    security_groups = [aws_security_group.lb.id]
+    security_groups = [aws_security_group.alb.id]
   }
 
   egress {
@@ -129,7 +109,7 @@ resource "aws_security_group" "manage_tasks_task" {
     protocol        = "tcp"
     from_port       = var.manage_tasks_port
     to_port         = var.manage_tasks_port
-    security_groups = [aws_security_group.lb.id]
+    security_groups = [aws_security_group.alb.id]
   }
 
   egress {
@@ -146,27 +126,15 @@ resource "aws_security_group" "ProjectB_RDS_prod" {
   description = "Allow inbound/outbound access to our Production RDS instance."
   vpc_id      = aws_vpc.main.id
 
+  ## PERSONAL MACHINE... Eventually will reference AWS VPN hook here.
   #ingress {
-  #  cidr_blocks = ["98.211.55.29/32"]
+  #  cidr_blocks = ["XX.XXX.XX.XX/32"]
   #  description      = ""
   #  from_port        = 3306
   #  to_port          = 3306
   #  protocol         = "tcp"
   #}
-  ingress {
-    description      = "Prod ALB"
-    from_port        = 3306
-    to_port          = 3306
-    protocol         = "tcp"
-    security_groups  = [aws_security_group.lb.id]
-  }
-  ingress {
-    description      = "Prod NGINX task"
-    from_port        = 3306
-    to_port          = 3306
-    protocol         = "tcp"
-    security_groups  = [aws_security_group.nginx_task.id]
-  }
+
   #ingress {
   #  description      = "Prod tasks"
   #  from_port        = 3306
@@ -179,41 +147,6 @@ resource "aws_security_group" "ProjectB_RDS_prod" {
   #    aws_security_group.manage_columns_task.id,
   #    aws_security_group.manage_tasks_task.id
   #  ]
-  }
-  ingress {
-    description      = "Prod manage-auth task"
-    from_port        = 3306
-    to_port          = 3306
-    protocol         = "tcp"
-    security_groups  = [aws_security_group.manage_auth_task.id]
-  }
-  ingress {
-    description      = "Prod manage-users task"
-    from_port        = 3306
-    to_port          = 3306
-    protocol         = "tcp"
-    security_groups  = [aws_security_group.manage_users_task.id]
-  }
-  ingress {
-    description      = "Prod manage-boards task"
-    from_port        = 3306
-    to_port          = 3306
-    protocol         = "tcp"
-    security_groups  = [aws_security_group.manage_boards_task.id]
-  }
-  ingress {
-    description      = "Prod manage-columns task"
-    from_port        = 3306
-    to_port          = 3306
-    protocol         = "tcp"
-    security_groups  = [aws_security_group.manage_columns_task.id]
-  }
-  ingress {
-    description      = "Prod manage-tasks task"
-    from_port        = 3306
-    to_port          = 3306
-    protocol         = "tcp"
-    security_groups  = [aws_security_group.manage_tasks_task.id]
   }
 
   egress {

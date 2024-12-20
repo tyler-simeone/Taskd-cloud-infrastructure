@@ -38,6 +38,8 @@ resource "aws_alb_listener" "front_end" {
   }
 }
 
+## TO DO: Listener Rules
+
 
 #################
 ##   STAGING   ##
@@ -78,3 +80,5 @@ resource "aws_alb_listener" "staging" {
     type             = "forward"
   }
 }
+
+## TO DO: Listener Rules

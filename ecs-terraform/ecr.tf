@@ -3,9 +3,6 @@
 ##   PROD   ##
 ##############
 
-data "aws_ecr_repository" "nginx" {
-    name = "nginx-ecs-terraform"
-}
 data "aws_ecr_repository" "manage-auth" {
     name = "manage-auth"
 }
@@ -27,9 +24,6 @@ data "aws_ecr_repository" "manage-tasks" {
 ##   STAGING   ##
 #################
 
-data "aws_ecr_repository" "nginx-staging" {
-    name = "nginx-staging"
-}
 data "aws_ecr_repository" "manage-auth-staging" {
     name = "manage-auth-staging"
 }

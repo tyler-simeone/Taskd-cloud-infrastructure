@@ -9,7 +9,7 @@ variable "aws_profile" {
 }
 
 variable "ecs_service_name" {
-    default = "projectb-backend"
+    default = "projectb"
 }
 
 variable "az_count" {
@@ -27,23 +27,14 @@ variable "ecs_auto_scale_role_name" {
   default = "myEcsAutoScaleRole"
 }
 
-
-
 variable "prod_task_count" {
   description = "Number of ECS tasks to run in production"
-  default     = 2
+  default     = 1
 }
 
 variable "staging_task_count" {
   description = "Number of ECS tasks to run in staging"
   default     = 1
-}
-
-
-
-variable "nginx_port" {
-  description = "Port exposed by the NGINX docker image"
-  default     = 80
 }
 
 variable "manage_auth_port" {
@@ -71,13 +62,6 @@ variable "manage_tasks_port" {
   default     = 5273
 }
 
-
-
-variable "nginx_fargate_cpu" {
-  description = "Fargate instance CPU units to provision for NGINX (1 vCPU = 1024 CPU units)"
-  default     = 256
-}
-
 variable "manage_auth_fargate_cpu" {
   description = "Fargate instance CPU units to provision for back-end application (1 vCPU = 1024 CPU units)"
   default     = 256
@@ -103,13 +87,6 @@ variable "manage_tasks_fargate_cpu" {
   default     = 256
 }
 
-
-
-variable "nginx_fargate_memory" {
-  description = "Fargate instance memory to provision for NGINX (in MiB)"
-  default     = 512
-}
-
 variable "manage_auth_fargate_memory" {
   description = "Fargate instance memory to provision for back-end application (in MiB)"
   default     = 512
@@ -133,12 +110,4 @@ variable "manage_columns_fargate_memory" {
 variable "manage_tasks_fargate_memory" {
   description = "Fargate instance memory to provision for back-end application (in MiB)"
   default     = 512
-}
-
-
-
-
-variable "app_count" {
-  description = "Number of back-end application containers to run"
-  default     = 3
 }
