@@ -1,23 +1,4 @@
 services:
-    db:
-        image: mysql:latest
-        container_name: db-dev
-        environment:
-            - MYSQL_DATABASE=${MYSQL_DATABASE}
-            - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
-        ports:
-            - "3306:3306"
-        networks:
-            - my_custom_network
-        volumes:
-            - mysql_data:/var/lib/mysql
-            - ./db-init:/docker-entrypoint-initdb.d
-        healthcheck:
-            test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
-            interval: 10s
-            timeout: 5s
-            retries: 3
-
     manage-auth:
         build:
             context: ../../ProjectB-manage-auth/manage-auth
@@ -34,7 +15,7 @@ services:
             - AccessKey=${ACCESS_KEY}
             - SecretAccessKey=${SECRET_ACCESS_KEY}
         ports:
-            - "5058:80"
+            - "5058"
         networks:
             - my_custom_network
 
@@ -43,14 +24,12 @@ services:
             context: ../../ProjectB-manage-users/manage-users
         image: tylersimeone/projectb/manage-users
         container_name: manage-users-docker
-        depends_on:
-            - db
         environment:
             - UserPoolId=${USER_POOL_ID}
             - Region=${REGION}
             - ProjectBLocalConnection=${PROJECT_B_LOCAL_CONX}
         ports:
-            - "5222:80"
+            - "5222"
         networks:
             - my_custom_network
 
@@ -61,7 +40,6 @@ services:
         container_name: manage-boards-docker
         depends_on:
             - manage-columns
-            - db
         environment:
             - UserPoolId=${USER_POOL_ID}
             - Region=${REGION}
@@ -69,7 +47,7 @@ services:
             - ManageAuthLocalConnection=${MANAGE_AUTH_LOCAL_CONX}
             - ManageColumnsLocalConnection=${MANAGE_COLUMNS_LOCAL_CONX}
         ports:
-            - "5032:80"
+            - "5032"
         networks:
             - my_custom_network
 
@@ -78,15 +56,13 @@ services:
             context: ../../ProjectB-manage-columns/manage-columns
         image: tylersimeone/projectb/manage-columns
         container_name: manage-columns-docker
-        depends_on:
-            - db
         environment:
             - UserPoolId=${USER_POOL_ID}
             - Region=${REGION}
             - ProjectBLocalConnection=${PROJECT_B_LOCAL_CONX}
             - ManageTasksLocalConnection=${MANAGE_TASKS_LOCAL_CONX}
         ports:
-            - "5156:80"
+            - "5156"
         networks:
             - my_custom_network
 
@@ -95,14 +71,12 @@ services:
             context: ../../ProjectB-manage-tasks/manage-tasks
         image: tylersimeone/projectb/manage-tasks
         container_name: manage-tasks-docker
-        depends_on:
-            - db
         environment:
             - UserPoolId=${USER_POOL_ID}
             - Region=${REGION}
             - ProjectBLocalConnection=${PROJECT_B_LOCAL_CONX}
         ports:
-            - "5273:80"
+            - "5273"
         networks:
             - my_custom_network
 
