@@ -83,6 +83,3 @@ services:
 networks:
     my_custom_network:
         driver: bridge
-
-volumes:
-  mysql_data:
