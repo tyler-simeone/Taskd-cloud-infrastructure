@@ -15,9 +15,9 @@ services:
             - AccessKey=${ACCESS_KEY}
             - SecretAccessKey=${SECRET_ACCESS_KEY}
         ports:
-            - "5058"
+            - "127.0.0.1:5058:80"
         networks:
-            - my_custom_network
+            - local
 
     manage-users:
         build:
@@ -29,9 +29,9 @@ services:
             - Region=${REGION}
             - ProjectBLocalConnection=${PROJECT_B_LOCAL_CONX}
         ports:
-            - "5222"
+            - "127.0.0.1:5222:80"
         networks:
-            - my_custom_network
+            - local
 
     manage-boards:
         build:
@@ -47,9 +47,9 @@ services:
             - ManageAuthLocalConnection=${MANAGE_AUTH_LOCAL_CONX}
             - ManageColumnsLocalConnection=${MANAGE_COLUMNS_LOCAL_CONX}
         ports:
-            - "5032"
+            - "127.0.0.1:5032:80"
         networks:
-            - my_custom_network
+            - local
 
     manage-columns:
         build:
@@ -62,9 +62,9 @@ services:
             - ProjectBLocalConnection=${PROJECT_B_LOCAL_CONX}
             - ManageTasksLocalConnection=${MANAGE_TASKS_LOCAL_CONX}
         ports:
-            - "5156"
+            - "127.0.0.1:5156:80"
         networks:
-            - my_custom_network
+            - local
 
     manage-tasks:
         build:
@@ -76,10 +76,10 @@ services:
             - Region=${REGION}
             - ProjectBLocalConnection=${PROJECT_B_LOCAL_CONX}
         ports:
-            - "5273"
+            - "127.0.0.1:5273:80"
         networks:
-            - my_custom_network
+            - local
 
 networks:
-    my_custom_network:
+    local:
         driver: bridge
