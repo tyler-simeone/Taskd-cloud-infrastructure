@@ -27,7 +27,7 @@ services:
         environment:
             - UserPoolId=${USER_POOL_ID}
             - Region=${REGION}
-            - ProjectBLocalConnection=${PROJECT_B_LOCAL_CONX}
+            - LocalDBConnection=${TASKD_RDS_CONX}
         ports:
             - "127.0.0.1:5222:80"
         networks:
@@ -43,7 +43,7 @@ services:
         environment:
             - UserPoolId=${USER_POOL_ID}
             - Region=${REGION}
-            - ProjectBLocalConnection=${PROJECT_B_LOCAL_CONX}
+            - LocalDBConnection=${TASKD_RDS_CONX}
             - ManageAuthLocalConnection=${MANAGE_AUTH_LOCAL_CONX}
             - ManageColumnsLocalConnection=${MANAGE_COLUMNS_LOCAL_CONX}
         ports:
@@ -59,7 +59,7 @@ services:
         environment:
             - UserPoolId=${USER_POOL_ID}
             - Region=${REGION}
-            - ProjectBLocalConnection=${PROJECT_B_LOCAL_CONX}
+            - LocalDBConnection=${TASKD_RDS_CONX}
             - ManageTasksLocalConnection=${MANAGE_TASKS_LOCAL_CONX}
         ports:
             - "127.0.0.1:5156:80"
@@ -74,7 +74,7 @@ services:
         environment:
             - UserPoolId=${USER_POOL_ID}
             - Region=${REGION}
-            - ProjectBLocalConnection=${PROJECT_B_LOCAL_CONX}
+            - LocalDBConnection=${TASKD_RDS_CONX}
         ports:
             - "127.0.0.1:5273:80"
         networks:
