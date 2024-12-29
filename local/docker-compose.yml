@@ -79,6 +79,20 @@ services:
             - "127.0.0.1:5273:80"
         networks:
             - local
+    
+    manage-tags:
+        build:
+            context: ../../Taskd-manage-tags
+        image: tylersimeone/taskd/manage-tags
+        container_name: manage-tags-docker
+        environment:
+            - UserPoolId=${USER_POOL_ID}
+            - Region=${REGION}
+            - LocalDBConnection=${TASKD_RDS_CONX}
+        ports:
+            - "127.0.0.1:5280:80"
+        networks:
+            - local
 
 networks:
     local:
