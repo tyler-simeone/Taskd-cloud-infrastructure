@@ -75,6 +75,8 @@ services:
             - UserPoolId=${USER_POOL_ID}
             - Region=${REGION}
             - LocalDBConnection=${TASKD_RDS_CONX}
+            - ManageAuthLocalConnection=${MANAGE_AUTH_LOCAL_CONX}
+            - ManageTagsLocalConnection=${MANAGE_TAGS_LOCAL_CONX}
         ports:
             - "127.0.0.1:5273:80"
         networks:
